@@ -27,8 +27,8 @@ ctx.fillStyle = "white";
 ctx.fillRect(stageProperties.left, stageProperties.right, 
     stageProperties.width, stageProperties.height);
  
+const shapes = [];
 const path = [];
-
 
 
 myCanvas.addEventListener("pointerdown", (e) => {
@@ -37,19 +37,28 @@ myCanvas.addEventListener("pointerdown", (e) => {
         y: e.offsetY
     };
     path.push(mousePosition);
-    myCanvas.addEventListener("pointermove", (e) => {
+
+    const moveCallback = (e) => {
         const mousePosition = {
             x: e.offsetX,
             y: e.offsetY
-        }
-        path.push(mousePosition);
-    })
-    myCanvas.addEventListener("pointerup", (e) => {
+        };
+        path.push(mousePosition)
+    }
+
+    const upCallback = e => {
+        myCanvas.removeEventListener("pointermove", moveCallback);
+        myCanvas.removeEventListener("pointerup", upCallback);
+        
+        shapes.push(path);
         ctx.beginPath();
         ctx.moveTo(path[0].x, path[0].y);
         path.forEach((point) => {
             ctx.lineTo(point.x, point.y);
         });
         ctx.stroke();
-    })
+    }
+
+    myCanvas.addEventListener("pointermove", moveCallback)
+    myCanvas.addEventListener("pointerup", upCallback)
 })
