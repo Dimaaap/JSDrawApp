@@ -1,5 +1,16 @@
+*{
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     overflow: hidden;
     box-sizing: border-box;
+}
+
+#tools {
+    position: absolute;
+    top: 10px;
+    margin: 5px;
+    left: 1px
 }

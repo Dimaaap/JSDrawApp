@@ -12,10 +12,6 @@ const canvasProperties = {
 myCanvas.height = canvasProperties.height;
 myCanvas.width = canvasProperties.width;
 
-const ctx = myCanvas.getContext("2d");
-ctx.fillStyle = "gray";
-ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
-
 const stageProperties = {
     width: 600,
     height: 480,
@@ -23,13 +19,13 @@ const stageProperties = {
     right: canvasProperties.center.y - 480 / 2
 }
 
-ctx.fillStyle = "white";
-ctx.fillRect(stageProperties.left, stageProperties.right, 
-    stageProperties.width, stageProperties.height);
+const ctx = myCanvas.getContext("2d");
+clearCanvas();
+
+
  
 const shapes = [];
-const path = [];
-
+let path = [];
 
 myCanvas.addEventListener("pointerdown", (e) => {
     const mousePosition = {
@@ -44,6 +40,18 @@ myCanvas.addEventListener("pointerdown", (e) => {
             y: e.offsetY
         };
         path.push(mousePosition)
+
+        clearCanvas();
+        for(const shape of [...shapes, path]){
+            ctx.beginPath();
+            ctx.strokeStyle="rgba(0, 0, 0, 0.5)";
+            ctx.lineWidth = 5;
+            ctx.moveTo(shape[0].x, shape[0].y);
+            for(let i = 1; i < shape.length; i++){
+                ctx.lineTo(shape[i].x, shape[i].y)
+            }
+            ctx.stroke();
+        }
     }
 
     const upCallback = e => {
@@ -51,14 +59,21 @@ myCanvas.addEventListener("pointerdown", (e) => {
         myCanvas.removeEventListener("pointerup", upCallback);
         
         shapes.push(path);
-        ctx.beginPath();
-        ctx.moveTo(path[0].x, path[0].y);
-        path.forEach((point) => {
-            ctx.lineTo(point.x, point.y);
-        });
-        ctx.stroke();
+        path = [];
+
     }
 
     myCanvas.addEventListener("pointermove", moveCallback)
     myCanvas.addEventListener("pointerup", upCallback)
 })
+
+
+function clearCanvas(){
+    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    ctx.fillStyle = "gray";
+    ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
+
+    ctx.fillStyle = "white";
+    ctx.fillRect(stageProperties.left, stageProperties.right, 
+        stageProperties.width, stageProperties.height);
+}
