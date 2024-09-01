@@ -1,16 +1,5 @@
-*{
-    box-sizing: border-box;
-}
-
 body {
     margin: 0;
     overflow: hidden;
     box-sizing: border-box;
-}
-
-#toolBox {
-    position: absolute;
-    top: 0px;
-    margin: 5px;
-    left: 0px;
 }
