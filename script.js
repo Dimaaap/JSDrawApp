@@ -30,7 +30,10 @@ const downCallbackForRect = function(e) {
             x: e.offsetX,
             y: e.offsetY
         };
-        currentShape = new Rect(mousePosition);
+        currentShape = new Rect(mousePosition, {
+            fillColor: fillColor.value,
+            strokeColor:strokeColor.value
+        });
 
         const moveCallback = (e) => {
             const mousePosition = {
@@ -59,7 +62,10 @@ const downCallbackForPath = function(e) {
         y: e.offsetY
     };
     
-    currentShape = new Path(mousePosition);
+    currentShape = new Path(mousePosition, {
+        fillColor: fillColor.value,
+        strokeColor: strokeColor.value
+    });
 
     const moveCallback = (e) => {
         const mousePosition = {
